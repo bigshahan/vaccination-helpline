@@ -1,12 +1,13 @@
 {
-  "name": "vaccine-coordinator",
+  "name": "vaccination-helpline",
   "version": "0.0.1",
-  "description": "💉🌎",
+  "description": "💉🌎🌍🌏",
   "main": "index.js",
   "author": "Yefim & Shahan",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "twilio": "^3.55.1"
   },
   "devDependencies": {
     "prettier": "^2.2.1"
