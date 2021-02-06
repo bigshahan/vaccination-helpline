@@ -64,6 +64,7 @@ app.post('/v1/twilio/hook', (req, res) => {
     twiml.say({voice: 'alice'}, 'Thank you. We have your number. Please leave a message after the beep');
     twiml.record({finishOnKey: '#'});
   } else if (state.matches('hangup')) {
+    // Pull phone number out of state context or use the From variable that twilio provides
     // Write to airtable
     twiml.say({voice: 'alice'}, 'Thank you. We will get back to you');
     twiml.hangup();
