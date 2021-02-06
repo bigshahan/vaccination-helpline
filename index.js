@@ -14,11 +14,11 @@ app.get('/', (req, res) => res.send('💉🌎🌍🌏'));
 
 const getEvent = (digits) => {
   switch (digits) {
-    '1':
+    case '1':
       return 'PRESS_ONE';
-    '2':
+    case '2':
       return 'PRESS_TWO';
-    '3':
+    case '3':
       return 'PRESS_THREE';
     default:
       return 'PRESS_POUND';
