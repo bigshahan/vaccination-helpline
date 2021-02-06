@@ -56,7 +56,7 @@ app.post('/v1/twilio/hook', (req, res) => {
     // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('numberInputConfirm')) {
-    twiml.say({voice: 'alice'}, `You typed in ____. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
+    twiml.say({voice: 'alice'}, `You typed in ${Digits}. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
     twiml.gather({numDigits: 1, /* action: `/v1/twilio/hook?input=_____` or store number in xstate? */});
     // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
