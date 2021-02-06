@@ -61,8 +61,8 @@ app.post('/v1/twilio/hook', (req, res) => {
     // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('voicemail')) {
-    twiml.say({voice: 'alice'}, 'Thank you. We have your number. Please leave a message lol');
-    twiml.record();
+    twiml.say({voice: 'alice'}, 'Thank you. We have your number. Please leave a message after the beep');
+    twiml.record({finishOnKey: '#'});
   } else if (state.matches('hangup')) {
     // Write to airtable
     twiml.say({voice: 'alice'}, 'Thank you. We will get back to you');
