@@ -1,11 +1,17 @@
 {
   "name": "vaccine-coordinator",
   "version": "0.0.1",
-  "description": "💉",
-  "main": "main.js",
+  "description": "💉🌎",
+  "main": "index.js",
   "author": "Yefim & Shahan",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "prettier": "^2.2.1"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
