@@ -35,7 +35,11 @@ app.post('/v1/twilio/hook', (req, res) => {
   const currentState = getStateForSession(CallSid);
   const userEvent = getEvent(Digits);
 
+  console.log(`Current state is ${currentState.value}`);
+
   const state = vaccineMachine.transition(currentState, userEvent);
+
+  console.log(`After ${userEvent} the state is now ${state.value}`);
 
   saveStateForSession(CallSid, state);
 
