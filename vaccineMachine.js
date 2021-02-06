@@ -13,7 +13,7 @@ const vaccineMachine = Machine({
           PRESS_TWO: 'numberInput',
           PRESS_THREE: 'welcome',
         },
-        actions: ['welcome'],
+        // actions: ['welcome'],
       },
       numberInput: {
         on: {
@@ -39,8 +39,8 @@ const vaccineMachine = Machine({
   }, {
     actions: {
       welcome: (context, event) => {
-        context.res.write('<Say>Hello</Say>');
-        context.res.send();
+        // context.res.write('<Say>Hello</Say>');
+        // context.res.send();
         console.log('Welcome to Vaccination Helpline. Please enter your phone number at the beep');
       }
     }

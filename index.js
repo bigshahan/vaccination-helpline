@@ -12,35 +12,64 @@ const PORT = config.PORT;
 
 app.get('/', (req, res) => res.send('💉🌎🌍🌏'));
 
+const getEvent = (digits) => {
+  switch (digits) {
+    '1':
+      return 'PRESS_ONE';
+    '2':
+      return 'PRESS_TWO';
+    '3':
+      return 'PRESS_THREE';
+    default:
+      return 'PRESS_POUND';
+  }
+};
+
 app.post('/v1/twilio/hook', (req, res) => {
   console.log(req.body);
 
   const {
-    CallSID, From,
+    CallSid, From, RecordingUrl, Digits
   } = req.body;
 
-  const currentState = getStateForSession(CallSID);
+  const currentState = getStateForSession(CallSid);
+  const userEvent = getEvent(Digits);
 
-  /*
-    const twiml = new VoiceResponse();
-    twiml.say({voice: 'alice'}, 'Please leave your name and phone number at the beep.');
-*/
+  const state = vaccineMachine.transition(currentState, userEvent);
 
-  // const initialState = vaccineMachine.getInitialState();;
-  // console.log(initialState.value);
+  saveStateForSession(CallSid, state);
 
-  console.log(`State before machine is run: ${currentState.value}`);
+  const twiml = new VoiceResponse();
 
-  const nextState = vaccineMachine.transition(currentState, {res: res, type: 'PRESS_ONE'});
+  if (state.matches('welcome')) {
+    twiml.say({voice: 'alice'}, `Is your number ${From}? Press 1 if yes, 2 if no, 3 to repeat.`);
+    twiml.gather({numDigits: 1});
+    // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
+    // twiml.hangup();
+  } else if (state.matches('numberInput')) {
+    twiml.say({voice: 'alice'}, `Please type in your number followed by a pound sign.`);
+    twiml.gather({finishOnKey: '#'});
+    // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
+    // twiml.hangup();
+  } else if (state.matches('numberInputConfirm')) {
+    twiml.say({voice: 'alice'}, `You typed in ____. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
+    twiml.gather({numDigits: 1, /* action: `/v1/twilio/hook?input=_____` or store number in xstate? */});
+    // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
+    // twiml.hangup();
+  } else if (state.matches('voicemail')) {
+    twiml.say({voice: 'alice'}, 'Thank you. We have your number. Please leave a message lol');
+    twiml.record();
+  } else if (state.matches('hangup')) {
+    // Write to airtable
+    twiml.say({voice: 'alice'}, 'Thank you. We will get back to you');
+    twiml.hangup();
+  } else {
+    throw new Error('We should not ever get here lol');
+  }
 
-  saveStateForSession(CallSID, nextState);
-
-  console.log(`After state is run: ${currentState.value}`);
-
-
-    res.setHeader('Content-Type', 'text/xml');
-    // res.write(twiml.toString());
-    res.end();
+  res.setHeader('Content-Type', 'text/xml');
+  res.write(twiml.toString());
+  res.end();
 });
 
 app.listen(PORT, () => {
