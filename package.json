@@ -1,0 +1,11 @@
+{
+  "name": "vaccine-coordinator",
+  "version": "0.0.1",
+  "description": "💉",
+  "main": "main.js",
+  "author": "Yefim & Shahan",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
