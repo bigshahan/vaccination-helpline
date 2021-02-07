@@ -12,9 +12,11 @@
     "xstate": "^4.16.1"
   },
   "devDependencies": {
+    "nodemon": "^2.0.7",
     "prettier": "^2.2.1"
   },
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "dev": "AIRTABLE_API_KEY=test nodemon index.js"
   }
 }
