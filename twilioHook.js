@@ -21,6 +21,8 @@ const getEvent = (digits) => {
   }
 };
 
+const sidToPhone = {};
+
 const twilioHook = (req, res) => {
   console.log(req.body);
 
@@ -41,6 +43,10 @@ const twilioHook = (req, res) => {
 
   const twiml = new VoiceResponse();
 
+  if (!sidToPhone[CallSid]) {
+    sidToPhone[CallSid] = From;
+  }
+
   if (state.matches('welcome')) {
     twiml.say({voice: 'alice'}, `Is your number ${From}? Press 1 if yes, 2 if no, 3 to repeat.`);
     twiml.gather({numDigits: 1});
@@ -52,6 +58,7 @@ const twilioHook = (req, res) => {
     // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('numberInputConfirm')) {
+    sidToPhone[CallSid] = Digits
     twiml.say({voice: 'alice'}, `You typed in ${Digits}. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
     twiml.gather({numDigits: 1, /* action: `/v1/twilio/hook?input=_____` or store number in xstate? */});
     // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
@@ -65,10 +72,12 @@ const twilioHook = (req, res) => {
     twiml.hangup();
 
     // Write to airtable
+    // TODO: Make Table name configurable
+    // We could use the Metadata API to configure the perfect airtable table automatically
     base('Table 1').create([
         {
           "fields": {
-            Phone: 'TEST',
+            Phone: sidToPhone[CallSid],
             Voicemail: [{
               url: RecordingUrl,
             }],
