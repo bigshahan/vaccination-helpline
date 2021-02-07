@@ -2,6 +2,12 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 const { vaccineMachine, getStateForSession, saveStateForSession } = require('./vaccineMachine');
 
+const config = require('./config');
+
+const Airtable = require('airtable');
+Airtable.configure({ apiKey: config.AIRTABLE_API_KEY })
+const base = Airtable.base('appSneAc22kTn1k7l');
+
 const getEvent = (digits) => {
   switch (digits) {
     case '1':
@@ -55,9 +61,27 @@ const twilioHook = (req, res) => {
     twiml.record({finishOnKey: '#'});
   } else if (state.matches('hangup')) {
     // Pull phone number out of state context or use the From variable that twilio provides
-    // Write to airtable
     twiml.say({voice: 'alice'}, 'Thank you. We will get back to you');
     twiml.hangup();
+
+    // Write to airtable
+    base('Table 1').create([
+        {
+          "fields": {
+            Phone: 'TEST',
+            Voicemail: [{
+              url: twiml.RecordingUrl,
+            }],
+          },
+        },
+      ])
+      .then((result) => {
+        console.log('Saved to airtable', result);
+      })
+      .catch(e => {
+        console.error('Saving to airtable failed', e);
+      });
+
   } else {
     throw new Error('We should not ever get here lol');
   }

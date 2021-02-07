@@ -1,16 +1,14 @@
 const { urlencoded } = require('body-parser');
 const express = require('express');
-const Airtable = require('airtable');
+const twilioHook = require('./twilioHook');
 
 const config = require('./config');
-const twilioHook = require('./twilioHook');
 
 const app = express();
 app.use(urlencoded({ extended: false }));
 
 const PORT = config.PORT;
 
-Airtable.configure({ apiKey: config.AIRTABLE_API_KEY });
 
 app.get('/', (req, res) => res.send('💉🌎🌍🌏'));
 
