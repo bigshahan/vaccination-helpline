@@ -66,7 +66,7 @@ const twilioHook = (req, res) => {
     // Write to airtable
     // TODO: Make Table name configurable
     // We could use the Metadata API to configure the perfect airtable table automatically
-    base('Table 1').create([
+    base('People').create([
         {
           "fields": {
             Phone: state.context.phone || From,
