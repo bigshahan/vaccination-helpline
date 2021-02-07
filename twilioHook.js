@@ -44,21 +44,18 @@ const twilioHook = (req, res) => {
 
   if (state.matches('welcome')) {
     twiml.say({voice: defaultVoice}, `Is your number ${From}?`);
-    const gather = twiml.gather({numDigits: 1});
+    const gather = twiml.gather({numDigits: 1, timeout: 3});
     gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a different callback number. Press 3 to repeat.');
-    // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
-    // twiml.hangup();
+    twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('numberInput')) {
     twiml.say({voice: defaultVoice}, `Please type in your number followed by a pound sign.`);
-    twiml.gather({finishOnKey: '#'});
-    // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
-    // twiml.hangup();
+    twiml.gather({finishOnKey: '#', timeout: 60});
+    twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('numberInputConfirm')) {
     twiml.say({voice: defaultVoice}, `You typed in ${state.context.phone}. Is that correct?`);
-    const gather = twiml.gather({numDigits: 1});
+    const gather = twiml.gather({numDigits: 1, timeout: 60});
     gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a new callback number. Press 3 to repeat.');
-    // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
-    // twiml.hangup();
+    twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('voicemail')) {
     twiml.say({voice: defaultVoice}, 'Thank you. We have your number. Please leave a message after the beep');
     twiml.record({finishOnKey: '#'});
