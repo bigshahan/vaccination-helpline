@@ -58,7 +58,7 @@ const twilioHook = (req, res) => {
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('voicemail')) {
     twiml.say({voice: defaultVoice}, 'Thank you. We have your number. Please leave a message after the beep');
-    twiml.record({finishOnKey: '#'});
+    twiml.record({finishOnKey: '#', playBeep: true, maxLength: 600, timeout: 60});
   } else if (state.matches('hangup')) {
     twiml.say({voice: defaultVoice}, 'Thank you. We will get back to you');
     twiml.hangup();
