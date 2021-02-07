@@ -70,7 +70,7 @@ const twilioHook = (req, res) => {
           "fields": {
             Phone: 'TEST',
             Voicemail: [{
-              url: twiml.RecordingUrl,
+              url: RecordingUrl,
             }],
           },
         },
@@ -79,7 +79,7 @@ const twilioHook = (req, res) => {
         console.log('Saved to airtable', result);
       })
       .catch(e => {
-        console.error('Saving to airtable failed', e);
+        console.error('Saving to airtable failed', e.toString());
       });
 
   } else {
