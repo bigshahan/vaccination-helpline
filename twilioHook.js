@@ -22,9 +22,6 @@ const getEvent = (digits) => {
   }
 };
 
-// Store
-const sidToPhone = {};
-
 const twilioHook = (req, res) => {
   console.log(req.body);
 
@@ -37,17 +34,13 @@ const twilioHook = (req, res) => {
 
   console.log(`Current state is ${currentState.value}`);
 
-  const state = vaccineMachine.transition(currentState, userEvent);
+  const state = vaccineMachine.transition(currentState, {type: userEvent, From, Digits});
 
-  console.log(`After ${userEvent} the state is now ${state.value}`);
+  console.log(`After ${userEvent} the state is now ${state.value} with context being ${JSON.stringify(state.context)}`);
 
   saveStateForSession(CallSid, state);
 
   const twiml = new VoiceResponse();
-
-  if (!sidToPhone[CallSid]) {
-    sidToPhone[CallSid] = From;
-  }
 
   if (state.matches('welcome')) {
     twiml.say({voice: defaultVoice}, `Is your number ${From}? Press 1 if yes, 2 if no, 3 to repeat.`);
@@ -60,16 +53,14 @@ const twilioHook = (req, res) => {
     // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('numberInputConfirm')) {
-    sidToPhone[CallSid] = Digits
-    twiml.say({voice: defaultVoice}, `You typed in ${Digits}. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
-    twiml.gather({numDigits: 1, /* action: `/v1/twilio/hook?input=_____` or store number in xstate? */});
+    twiml.say({voice: defaultVoice}, `You typed in ${state.context.phone}. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
+    twiml.gather({numDigits: 1});
     // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('voicemail')) {
     twiml.say({voice: defaultVoice}, 'Thank you. We have your number. Please leave a message after the beep');
     twiml.record({finishOnKey: '#'});
   } else if (state.matches('hangup')) {
-    // Pull phone number out of state context or use the From variable that twilio provides
     twiml.say({voice: defaultVoice}, 'Thank you. We will get back to you');
     twiml.hangup();
 
@@ -79,7 +70,7 @@ const twilioHook = (req, res) => {
     base('Table 1').create([
         {
           "fields": {
-            Phone: sidToPhone[CallSid],
+            Phone: state.context.phone || From,
             Voicemail: [{
               url: RecordingUrl,
             }],

@@ -1,10 +1,10 @@
-const Machine = require('xstate').Machine;
+const { Machine, assign } = require('xstate');
 
 const vaccineMachine = Machine({
     id: 'vaccine',
     initial: 'welcome',
     context: {
-      retries: 0
+      phone: null,
     },
     states: {
       welcome: {
@@ -13,11 +13,15 @@ const vaccineMachine = Machine({
           PRESS_TWO: 'numberInput',
           PRESS_THREE: 'welcome',
         },
-        // actions: ['welcome'],
       },
       numberInput: {
         on: {
-          PRESS_POUND: 'numberInputConfirm',
+          PRESS_POUND: {
+            target: 'numberInputConfirm',
+            actions: assign({
+              phone: (context, event) => event.Digits
+            }),
+          }
         }
       },
       numberInputConfirm: {
@@ -25,7 +29,7 @@ const vaccineMachine = Machine({
           PRESS_ONE: 'voicemail',
           PRESS_TWO: 'numberInput',
           PRESS_THREE: 'numberInputConfirm',
-        }
+        },
       },
       voicemail: {
         on: {
@@ -34,14 +38,6 @@ const vaccineMachine = Machine({
       },
       hangup: {
         type: 'final',
-      }
-    }
-  }, {
-    actions: {
-      welcome: (context, event) => {
-        // context.res.write('<Say>Hello</Say>');
-        // context.res.send();
-        console.log('Welcome to Vaccination Helpline. Please enter your phone number at the beep');
       }
     }
   });
