@@ -20,6 +20,7 @@
     "dev": "AIRTABLE_API_KEY=test nodemon index.js"
   },
   "engines": {
-    "node": "14.x"
+    "node": "14.x",
+    "yarn": "1.22.x"
   }
 }
