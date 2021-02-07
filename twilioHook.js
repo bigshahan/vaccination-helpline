@@ -52,7 +52,7 @@ const twilioHook = (req, res) => {
   if (state.matches('welcome')) {
     twiml.say({voice: defaultVoice}, `Is your number ${From}? Press 1 if yes, 2 if no, 3 to repeat.`);
     twiml.gather({numDigits: 1});
-    // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
+    // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('numberInput')) {
     twiml.say({voice: defaultVoice}, `Please type in your number followed by a pound sign.`);
