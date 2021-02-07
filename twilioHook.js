@@ -54,8 +54,9 @@ const twilioHook = (req, res) => {
     // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('numberInputConfirm')) {
-    twiml.say({voice: defaultVoice}, `You typed in ${state.context.phone}. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
-    twiml.gather({numDigits: 1});
+    twiml.say({voice: defaultVoice}, `You typed in ${state.context.phone}. Is that correct?`);
+    const gather = twiml.gather({numDigits: 1});
+    gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a new callback number. Press 3 to repeat.');
     // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('voicemail')) {
