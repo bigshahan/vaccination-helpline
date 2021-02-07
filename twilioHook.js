@@ -43,7 +43,7 @@ const twilioHook = (req, res) => {
   const twiml = new VoiceResponse();
 
   if (state.matches('welcome')) {
-    twiml.say({voice: defaultVoice}, `Is your number ${From}?`);
+    twiml.say({voice: defaultVoice}, `Is your number ${From.split('').join(' ')}?`);
     const gather = twiml.gather({numDigits: 1, timeout: 60});
     gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a different callback number. Press 3 to repeat.');
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
