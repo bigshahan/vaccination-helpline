@@ -52,8 +52,13 @@ const saveStateForSession = (sid, newState) => {
   existingSessions[sid] = newState;
 }
 
+const deleteStateForSession = (sid) => {
+  delete existingSessions[sid];
+}
+
 module.exports = {
   vaccineMachine,
   getStateForSession,
   saveStateForSession,
+  deleteStateForSession,
 }

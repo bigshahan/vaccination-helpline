@@ -1,6 +1,6 @@
 const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
-const { vaccineMachine, getStateForSession, saveStateForSession } = require('./vaccineMachine');
+const { vaccineMachine, getStateForSession, saveStateForSession, deleteStateForSession } = require('./vaccineMachine');
 
 const config = require('./config');
 
@@ -34,7 +34,7 @@ const twilioHook = (req, res) => {
 
   console.log(`Current state is ${currentState.value}`);
 
-  const state = vaccineMachine.transition(currentState, {type: userEvent, From, Digits});
+  const state = vaccineMachine.transition(currentState, {type: userEvent, Digits});
 
   console.log(`After ${userEvent} the state is now ${state.value} with context being ${JSON.stringify(state.context)}`);
 
@@ -84,7 +84,7 @@ const twilioHook = (req, res) => {
       .catch(e => {
         console.error('Saving to airtable failed', e.toString());
       });
-
+    deleteStateForSession(CallSid);
   } else {
     throw new Error('We should not ever get here lol');
   }
