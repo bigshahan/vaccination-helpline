@@ -16,6 +16,10 @@ app.get('/', (req, res) => res.send('💉🌎🌍🌏'));
 
 app.post('/v1/twilio/hook', twilioHook);
 
+app.get('/crash', () => {
+  throw new Error('haha');
+});
+
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
 });
