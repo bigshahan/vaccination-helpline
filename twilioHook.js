@@ -7,6 +7,7 @@ const config = require('./config');
 const Airtable = require('airtable');
 Airtable.configure({ apiKey: config.AIRTABLE_API_KEY })
 const base = Airtable.base('appSneAc22kTn1k7l');
+const defaultVoice = 'Polly.Joanna-Neural';
 
 const getEvent = (digits) => {
   switch (digits) {
@@ -21,6 +22,7 @@ const getEvent = (digits) => {
   }
 };
 
+// Store
 const sidToPhone = {};
 
 const twilioHook = (req, res) => {
@@ -48,27 +50,27 @@ const twilioHook = (req, res) => {
   }
 
   if (state.matches('welcome')) {
-    twiml.say({voice: 'alice'}, `Is your number ${From}? Press 1 if yes, 2 if no, 3 to repeat.`);
+    twiml.say({voice: defaultVoice}, `Is your number ${From}? Press 1 if yes, 2 if no, 3 to repeat.`);
     twiml.gather({numDigits: 1});
     // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('numberInput')) {
-    twiml.say({voice: 'alice'}, `Please type in your number followed by a pound sign.`);
+    twiml.say({voice: defaultVoice}, `Please type in your number followed by a pound sign.`);
     twiml.gather({finishOnKey: '#'});
-    // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
+    // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('numberInputConfirm')) {
     sidToPhone[CallSid] = Digits
-    twiml.say({voice: 'alice'}, `You typed in ${Digits}. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
+    twiml.say({voice: defaultVoice}, `You typed in ${Digits}. Is that correct? Press 1 if yes, press 2 if no, press 3 to repeat.`);
     twiml.gather({numDigits: 1, /* action: `/v1/twilio/hook?input=_____` or store number in xstate? */});
-    // twiml.say({voice: 'alice'}, 'We could not process your request. Please call back and try again.');
+    // twiml.say({voice: defaultVoice}, 'We could not process your request. Please call back and try again.');
     // twiml.hangup();
   } else if (state.matches('voicemail')) {
-    twiml.say({voice: 'alice'}, 'Thank you. We have your number. Please leave a message after the beep');
+    twiml.say({voice: defaultVoice}, 'Thank you. We have your number. Please leave a message after the beep');
     twiml.record({finishOnKey: '#'});
   } else if (state.matches('hangup')) {
     // Pull phone number out of state context or use the From variable that twilio provides
-    twiml.say({voice: 'alice'}, 'Thank you. We will get back to you');
+    twiml.say({voice: defaultVoice}, 'Thank you. We will get back to you');
     twiml.hangup();
 
     // Write to airtable
