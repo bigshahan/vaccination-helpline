@@ -6,6 +6,7 @@
   "author": "Yefim & Shahan",
   "license": "MIT",
   "dependencies": {
+    "@sentry/node": "^6.1.0",
     "airtable": "^0.10.1",
     "express": "^4.17.1",
     "twilio": "^3.55.1",

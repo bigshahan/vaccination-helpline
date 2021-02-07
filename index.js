@@ -1,6 +1,8 @@
 const { urlencoded } = require('body-parser');
 const express = require('express');
 const twilioHook = require('./twilioHook');
+const Sentry = require('@sentry/node');
+Sentry.init({ dsn: process.env.SENTRY_DSN });
 
 const config = require('./config');
 
