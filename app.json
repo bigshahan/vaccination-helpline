@@ -3,4 +3,18 @@
   "description": "💉🌎🌍🌏",
   "repository": "https://github.com/bigshahan/vaccination-helpline",
   "keywords": ["vaccine", "vaccination"]
+  "env": {
+    "AIRTABLE_API_KEY": {
+      "description": "Airtable API Key that is used to write to volunteer task queue",
+      "value": "test"
+    },
+    "NODE_ENV": {
+      "description": "Environment for Node.js application",
+      "value": "production"
+    },
+    "YARN_PRODUCTION": {
+      "description": "Environment variable for Node.js package manager",
+      "value": "true"
+    }
+  }
 }
