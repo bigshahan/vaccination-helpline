@@ -2,7 +2,7 @@
   "name": "Vaccination Helpline",
   "description": "💉🌎🌍🌏",
   "repository": "https://github.com/bigshahan/vaccination-helpline",
-  "keywords": ["vaccine", "vaccination"]
+  "keywords": ["vaccine", "vaccination"],
   "env": {
     "AIRTABLE_API_KEY": {
       "description": "Airtable API Key that is used to write to volunteer task queue",
