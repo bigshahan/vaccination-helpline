@@ -26,7 +26,7 @@ const twilioHook = (req, res) => {
   console.log(req.body);
 
   const {
-    CallSid, From, RecordingUrl, Digits
+    CallSid, From, RecordingUrl, CallerZip, Digits
   } = req.body;
 
   const currentState = getStateForSession(CallSid);
@@ -34,7 +34,7 @@ const twilioHook = (req, res) => {
 
   console.log(`Current state is ${currentState.value}`);
 
-  const state = vaccineMachine.transition(currentState, {type: userEvent, Digits});
+  const state = vaccineMachine.transition(currentState, {type: userEvent, CallerZip, Digits});
 
   console.log(`After ${userEvent} the state is now ${state.value} with context being ${JSON.stringify(state.context)}`);
 

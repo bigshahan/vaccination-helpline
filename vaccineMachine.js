@@ -20,7 +20,8 @@ const vaccineMachine = Machine({
           PRESS_POUND: {
             target: 'numberInputConfirm',
             actions: assign({
-              phone: (context, event) => event.Digits
+              phone: (context, event) => event.Digits,
+              zipCode: (context, event) => event.CallerZip,
             }),
           }
         }
@@ -33,12 +34,14 @@ const vaccineMachine = Machine({
         },
       },
       zipCodeInput: {
-        PRESS_POUND: {
+        on: {
+          PRESS_POUND: {
             target: 'zipCodeInputConfirm',
             actions: assign({
               zipCode: (context, event) => event.Digits
             }),
           },
+        },
       },
       zipCodeInputConfirm: {
         on: {
