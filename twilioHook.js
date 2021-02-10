@@ -59,8 +59,8 @@ const twilioHook = (req, res) => {
     gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a new callback number. Press 3 to repeat.');
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('zipCodeInput')) {
-    twiml.say({voice: defaultVoice}, `Please type in your zip code followed by a pound sign.`);
-    twiml.gather({finishOnKey: '#', timeout: 60});
+    twiml.say({voice: defaultVoice}, `Please type in your zip code.`);
+    twiml.gather({numDigits: 5, timeout: 60});
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('zipCodeInputConfirm')) {
     twiml.say({voice: defaultVoice}, `You typed in ${state.context.zipCode.split('').join(' ')}. Is that correct?`);
