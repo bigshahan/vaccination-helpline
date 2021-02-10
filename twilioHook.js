@@ -46,35 +46,35 @@ const twilioHook = (req, res) => {
     twiml.say({voice: defaultVoice}, `Hi! Thank you for calling the “Vaccination Help Line”.`);
     twiml.say({voice: defaultVoice}, `We're here to help you schedule your vaccination appointment. While this line is automated, we will connect you to a volunteer who will reach out to you.`);
 
-      // Snip off +1 from US phone numbers.
+    // Snip off +1 from US phone numbers.
     const formatted = From.length === 12 ? From.substring(2) : From;
-    twiml.say({voice: defaultVoice}, `Is the following the number the right phone number you would like us to dial? ${formatted.split('').join(' ')}?`);
+    twiml.say({voice: defaultVoice}, `Is the following number the correct phone number you would like us to dial? ${formatted.split('').join(' ')}?`);
     const gather = twiml.gather({numDigits: 1, timeout: 60});
-    gather.say({voice: defaultVoice}, 'Press 1 to “accept” or press 2 to “enter a different number”, or press 3 to “repeat” this option.');
+    gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a different number. Press 3 to repeat.');
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('numberInput')) {
-    twiml.say({voice: defaultVoice}, `Please type in your number followed by a pound sign.`);
+    twiml.say({voice: defaultVoice}, 'Please enter your area code and phone number followed by pound.');
     twiml.gather({finishOnKey: '#', timeout: 60});
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('numberInputConfirm')) {
-    twiml.say({voice: defaultVoice}, `You typed in ${state.context.phone.split('').join(' ')}. Is that correct?`);
+    twiml.say({voice: defaultVoice}, `You entered ${state.context.phone.split('').join(' ')}. Is that correct?`);
     const gather = twiml.gather({numDigits: 1, timeout: 60});
     gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a new callback number. Press 3 to repeat.');
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('zipCodeInput')) {
-    twiml.say({voice: defaultVoice}, `Thank you! Now enter your zip-code.`);
+    twiml.say({voice: defaultVoice}, 'Thank you! Now enter your 5 digit zip code.');
     twiml.gather({numDigits: 5, timeout: 60});
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('zipCodeInputConfirm')) {
-    twiml.say({voice: defaultVoice}, `You entered, ${state.context.zipCode.split('').join(' ')}. Is that correct?`);
+    twiml.say({voice: defaultVoice}, `You entered ${state.context.zipCode.split('').join(' ')}. Is that correct?`);
     const gather = twiml.gather({numDigits: 1, timeout: 60});
-    gather.say({voice: defaultVoice}, 'Press 1 to confirm or 2 to erase and re-enter the zip-code. Press 3 to repeat.');
+    gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to re-enter your zip code. Press 3 to repeat.');
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('voicemail')) {
-    twiml.say({voice: defaultVoice}, 'Thank you. A volunteer will reach out to you shortly. After the tone, please say your name. When you are finished recording, please press the pound or star key, or you can hang up.');
-    twiml.record({finishOnKey: '#', playBeep: true, maxLength: 600, timeout: 60});
+    twiml.say({voice: defaultVoice}, 'Thank you. A volunteer will reach out to you shortly. After the tone, please say your name. When you are finished recording, you may hang up or press pound.');
+    twiml.record({finishOnKey: '#', playBeep: true, maxLength: 120, timeout: 60});
   } else if (state.matches('hangup')) {
-    twiml.say({voice: defaultVoice}, 'We’ve received your message. A volunteer will reach out soon. Thank you, and good bye!');
+    twiml.say({voice: defaultVoice}, 'We\'ve received your message. A volunteer will reach out to you shortly. Thank you, and good bye!');
     twiml.hangup();
 
     // Write to airtable
