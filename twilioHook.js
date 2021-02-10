@@ -58,6 +58,15 @@ const twilioHook = (req, res) => {
     const gather = twiml.gather({numDigits: 1, timeout: 60});
     gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a new callback number. Press 3 to repeat.');
     twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
+  } else if (state.matches('zipCodeInput')) {
+    twiml.say({voice: defaultVoice}, `Please type in your zip code followed by a pound sign.`);
+    twiml.gather({finishOnKey: '#', timeout: 60});
+    twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
+  } else if (state.matches('zipCodeInputConfirm')) {
+    twiml.say({voice: defaultVoice}, `You typed in ${state.context.zipCode.split('').join(' ')}. Is that correct?`);
+    const gather = twiml.gather({numDigits: 1, timeout: 60});
+    gather.say({voice: defaultVoice}, 'Press 1 to confirm. Press 2 to enter a new callback number. Press 3 to repeat.');
+    twiml.say({voice: defaultVoice}, 'We did not receive any input. Please call back and try again.');
   } else if (state.matches('voicemail')) {
     twiml.say({voice: defaultVoice}, 'Thank you. We have your number. Please leave a message after the beep');
     twiml.record({finishOnKey: '#', playBeep: true, maxLength: 600, timeout: 60});
@@ -75,6 +84,7 @@ const twilioHook = (req, res) => {
             Voicemail: [{
               url: RecordingUrl,
             }],
+            Zip: state.context.zipCode,
           },
         },
       ])

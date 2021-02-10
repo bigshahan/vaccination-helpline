@@ -5,6 +5,7 @@ const vaccineMachine = Machine({
     initial: 'welcome',
     context: {
       phone: null,
+      zipCode: null,
     },
     states: {
       welcome: {
@@ -26,9 +27,24 @@ const vaccineMachine = Machine({
       },
       numberInputConfirm: {
         on: {
-          PRESS_ONE: 'voicemail',
+          PRESS_ONE: 'zipCodeInput',
           PRESS_TWO: 'numberInput',
           PRESS_THREE: 'numberInputConfirm',
+        },
+      },
+      zipCodeInput: {
+        PRESS_POUND: {
+            target: 'zipCodeInputConfirm',
+            actions: assign({
+              zipCode: (context, event) => event.Digits
+            }),
+          },
+      },
+      zipCodeInputConfirm: {
+        on: {
+          PRESS_ONE: 'voicemail',
+          PRESS_TWO: 'zipCodeInput',
+          PRESS_THREE: 'zipCodeInputConfirm',
         },
       },
       voicemail: {
