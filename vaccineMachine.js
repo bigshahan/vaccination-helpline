@@ -10,7 +10,7 @@ const vaccineMachine = Machine({
     states: {
       welcome: {
         on: {
-          PRESS_ONE: 'voicemail',
+          PRESS_ONE: 'zipCodeInput',
           PRESS_TWO: 'numberInput',
           PRESS_THREE: 'welcome',
         },
