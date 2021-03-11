@@ -6,9 +6,13 @@ const vaccineMachine = Machine({
     context: {
       phone: null,
       zipCode: null,
+      createdAt: null,
     },
     states: {
       welcome: {
+        entry: assign({
+          createdAt: () => new Date(),
+        }),
         on: {
           PRESS_ONE: 'zipCodeInput',
           PRESS_TWO: 'numberInput',

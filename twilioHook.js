@@ -43,7 +43,7 @@ const twilioHook = (req, res) => {
   const twiml = new VoiceResponse();
 
   if (state.matches('welcome')) {
-    twiml.say({voice: defaultVoice}, `Hi! Thank you for calling the “Vaccination Help Line”.`);
+    twiml.say({voice: defaultVoice}, 'Hi! Thank you for calling the Volunteer-run Vaccination Help Line.');
     twiml.say({voice: defaultVoice}, `We're here to help you schedule your vaccination appointment. While this line is automated, we will connect you to a volunteer who will reach out to you.`);
 
     // Snip off +1 from US phone numbers.
@@ -88,6 +88,7 @@ const twilioHook = (req, res) => {
               url: RecordingUrl,
             }],
             Zip: state.context.zipCode,
+            CalledAt: state.context.createdAt,
           },
         },
       ])
