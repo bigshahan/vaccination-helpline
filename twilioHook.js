@@ -88,7 +88,7 @@ const twilioHook = (req, res) => {
               url: RecordingUrl,
             }],
             'Zip': state.context.zipCode,
-            'Called At': state.context.createdAt,
+            'Called At': JSON.stringify(state.context.createdAt),
           },
         },
       ])
