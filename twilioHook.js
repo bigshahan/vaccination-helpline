@@ -83,12 +83,12 @@ const twilioHook = (req, res) => {
     base('People').create([
         {
           "fields": {
-            Phone: state.context.phone || From,
-            Voicemail: [{
+            'Phone': state.context.phone || From,
+            'Voicemail': [{
               url: RecordingUrl,
             }],
-            Zip: state.context.zipCode,
-            CalledAt: state.context.createdAt,
+            'Zip': state.context.zipCode,
+            'Called At': state.context.createdAt,
           },
         },
       ])
